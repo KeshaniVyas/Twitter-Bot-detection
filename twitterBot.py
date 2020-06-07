@@ -12,33 +12,6 @@ bag_of_words_bot = r'bot|b0t|cannabis|tweet me|mishear|follow me|updates every|g
                            r'nerd|swag|jack|bang|bonsai|chick|prison|paper|pokem|xx|freak|ffd|dunia|clone|genie|bbb' \
                            r'ffd|onlyman|emoji|joke|troll|droop|free|every|wow|cheese|yeah|bio|magic|wizard|face'
 
-def bot_classify(df2):
-   df1=df2.loc[:,:]
-   
-   df1['id'] = df1['id'].apply(lambda x: int(x))
-   df1['followers_count'] =df1.followers_count.apply(lambda x: 0 if x=='None' else int(x))
-   df1['friends_count'] =df1.friends_count.apply(lambda x: 0 if x=='None' else int(x))
-   df1['listed_count'] =df1.listed_count.apply(lambda x: 0 if x=='None' else int(x))
-   df1['statuses_count'] =df1.statuses_count.apply(lambda x: 0 if x=='None' else int(x))
-   df1['verified'] = df1.verified.apply(lambda x: 1 if ((x == True) or x == 'TRUE') else 0)
-   
-   condition = ((df1.name.str.contains(bag_of_words_bot, case=False, na=False)) |
-                     (df1.description.str.contains(bag_of_words_bot, case=False, na=False)) |
-                     (df1.screen_name.str.contains(bag_of_words_bot, case=False, na=False)) |
-                     (df1.status.str.contains(bag_of_words_bot, case=False, na=False))|(df1.verified==False)
-                     )
-
-   predicted_df = df1[condition]  # these all are bots
-   predicted_df.bot = 1
-   predicted_df = predicted_df[['id', 'bot']]
-   predicted_df1=df1[~condition]
-   predicted_df1.bot = 0
-   predicted_df1 = predicted_df1[['id', 'bot']]
-   predicted_df = pd.concat([predicted_df, predicted_df1])
-
-   predicted_df.to_csv('Testdata_classify.csv', index=False)
-
-
 def bot_detection(df1):
    # df=df1.copy()
    df=df1.loc[:,:]
@@ -132,8 +105,6 @@ def bot_detection(df1):
    
    
 train_df = pd.read_csv('mini_train.csv')
-test_df = pd.read_csv('mini_test.csv')
 pd.set_option('mode.chained_assignment',None)
 bot_detection(train_df)
-bot_classify(test_df)
    
