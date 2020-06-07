@@ -7,4 +7,4 @@ I have applied following machine learning algorithms for bot detection in Twitte
   3). Naive Bayes
   4). Decision Tree
  
- Testdata_classify.csv gives the result for the account whether it is bot or not.
+ 
